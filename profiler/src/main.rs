@@ -1,12 +1,11 @@
 use regex::Regex;
 use std::convert::Infallible;
+use std::io::Write;
 
 use hyper::service::{make_service_fn, service_fn};
 use hyper::{Body, Method, Request, Response, Server, StatusCode};
-extern crate pretty_env_logger;
-#[macro_use]
-extern crate log;
 
+mod log;
 mod profiler;
 
 async fn handler(request: Request<Body>) -> Result<Response<Body>, Infallible> {
@@ -36,15 +35,13 @@ async fn handler(request: Request<Body>) -> Result<Response<Body>, Infallible> {
 
 #[tokio::main]
 pub async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
-    pretty_env_logger::init();
-
     let make_svc = make_service_fn(|_conn| async { Ok::<_, Infallible>(service_fn(handler)) });
 
     let addr = ([127, 0, 0, 1], 3000).into();
 
     let server = Server::bind(&addr).serve(make_svc);
 
-    info!("Listening on http://{}", addr);
+    debug!("Listening on: {}", addr);
 
     server.await?;
 
