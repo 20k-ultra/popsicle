@@ -7,7 +7,7 @@ Deploy and run PoP (Points of Presence) profilers around the world to see what l
 ### Features
 
 - [Profiler](./profiler/)
-  - Benchmarks time to establish tcp connection, tls handshake, and recieve HTTP response.
+  - Benchmarks time to establish tcp connection, tls handshake, and recieve first byte.
   - Supports concurrent requests to PoP node
 - [CLI](./cli/)
   - Query deployed regions to profile PoPs
