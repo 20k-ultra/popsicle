@@ -1,0 +1,18 @@
+[package]
+name = "lambda-function"
+version = "0.1.0"
+edition = "2021"
+autobins = false
+
+[dependencies]
+lambda_http = "0.7"
+lambda_runtime = "0.7"
+serde_json = "1.0.93"
+tokio = { version = "1", features = ["macros"] }
+tracing = { version = "0.1", features = ["log"] }
+tracing-subscriber = { version = "0.3", default-features = false, features = ["fmt"] }
+profiler = { path = "../profiler" }
+
+[[bin]]
+name = "bootstrap"
+path = "src/main.rs"

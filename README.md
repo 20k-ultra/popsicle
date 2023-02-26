@@ -7,14 +7,14 @@ Deploy and run PoP (Points of Presence) profilers around the world to see what l
 ### Features
 
 - [Profiler](./profiler/)
-  - Benchmarks time to establish tcp connection, tls handshake, and recieve first byte.
+  - Benchmarks time to establish tcp connection, tls handshake, and recieve first byte
   - Supports concurrent requests to PoP node
 - [CLI](./cli/)
   - Query deployed regions to profile PoPs
   - Output results in JSON, flamegraph, or plotted percentiles
-- [Automated Deploy](./deploy/)
-  - Deploy profilers to several regions with 1 command using Terraform
-  - With anycast networks you must run the profiler in regions you want to test
+- [Lambda Function](./lambda-function/)
+  - Build and package Rust Lambda HTTP service to expose profiler
+  - Deploy to several regions with 1 command using Terraform
   - Don't pay anything for having profiler's available at several locations
 
 ### Usage

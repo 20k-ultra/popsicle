@@ -15,19 +15,22 @@ pub struct Benchmark {
     pub total: Duration,
 }
 
-pub async fn benchmark(domain: &str, concurrency: usize) -> Result<Vec<Benchmark>, std::io::Error> {
+pub async fn benchmarks(
+    domain: &str,
+    concurrency: usize,
+) -> Result<Vec<Benchmark>, std::io::Error> {
     let handle = tokio::runtime::Handle::current();
     let mut tasks = Vec::new();
     let domain = Arc::new(domain.to_string());
     for _ in 0..concurrency {
         let domain_copy = domain.clone();
-        tasks.push(handle.spawn(async move { run_benchmark(domain_copy).await }));
+        tasks.push(handle.spawn(async move { benchmark(domain_copy).await }));
     }
     let results = futures::future::join_all(tasks).await;
     results.into_iter().map(Result::unwrap).collect()
 }
 
-async fn run_benchmark(domain: Arc<String>) -> Result<Benchmark, io::Error> {
+async fn benchmark(domain: Arc<String>) -> Result<Benchmark, io::Error> {
     let profile_start = Instant::now();
     // Resolve DNS
     let ip_addr = lookup_host(format!("{}:443", &*domain))
@@ -87,7 +90,7 @@ mod tests {
 
     #[tokio::test]
     async fn triple_benchmark() {
-        match benchmark("google.com", 3).await {
+        match benchmarks("google.com", 3).await {
             Ok(b) => assert_eq!(b.len(), 3),
             Err(e) => panic!("Something went wrong: {}", e),
         }
