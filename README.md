@@ -13,35 +13,22 @@ Deploy and run PoP (Points of Presence) profilers around the world to see what l
   - Build and package Rust Lambda HTTP service to expose profiler
   - Deploy to several regions with 1 command using Terraform
   - Don't pay anything for having profiler's available at several locations
-- [CLI](./cli/)
-  - Query deployed regions to profile PoPs
-  - Output results in JSON, flamegraph, or plotted percentiles
+- [TUI](./tui/) (Work in progress)
+  - Query a list of deployed profilers
+  - See what regions (PoP) respond to your profile node
+  - Benchmark timeline broken down in a graph to easily tell which parts take the longest
+  - Output results in JSON, flamegraph, or plotted percentiles ?
 
 ### Setup
 
-This repo contains a Rust crate (Profiler), Rust HTTP service for AWS Lambda runtime, and a CLI.
+This repo contains a Rust crate (Profiler), Rust HTTP service for AWS Lambda runtime, and a TUI.
 
-To starting using Popsicle, you need to deploy the HTTP service to AWS Lambda regions so you can than query them. Therefore, start by looking at the [lambda-function](./lambda-function/#deploying) docs.
+To starting using Popsicle, you need to deploy the HTTP service to AWS Lambda regions so you can than query them. Look at the [lambda-function](./lambda-function/#deploying) docs which also contains how you can run a a profile.
 
-Once that is done you can proceed to usage.
+### TUI (Work in progress)
 
-### CLI Installaion
+<img src="./tui/tui.png" height="400px" alt="TUI talking to deployed profilers">
 
-```
-# Clone this repo
-git clone git@github.com:20k-ultra/popsicle.git
+Browse through the benchmarks in an interactive terminal UI that displays locations of PoP that responded to your deployed profilers running on AWS Lambda. Breaks down timeline into visual graph.
 
-# Build and install CLI binary
-cargo install --path cli
-
-```
-
-### Example Usage
-
-First Deploy atleast 1 profiler to a region than you can run the cli like so:
-
-```
-popsicle-cli --region us-east-1.xgho.st --concurrency 10
-```
-
-This command will ask a profiler in us-east-1 region with 10 profling requests to the PoP closest to that region. This effectively tells you what users in this region would experience for latency.
+See [TUI](./tui/) for more.
