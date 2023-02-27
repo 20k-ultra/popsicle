@@ -26,8 +26,11 @@ pub async fn benchmarks(
         let domain_copy = domain.clone();
         tasks.push(handle.spawn(async move { benchmark(domain_copy).await }));
     }
-    let results = futures::future::join_all(tasks).await;
-    results.into_iter().map(Result::unwrap).collect()
+    let mut results = Vec::new();
+    for handle in tasks {
+        results.push(handle.await?.unwrap());
+    }
+    Ok(results)
 }
 
 async fn benchmark(domain: Arc<String>) -> Result<Benchmark, io::Error> {
