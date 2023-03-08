@@ -36,7 +36,7 @@ pub async fn benchmarks(
 async fn benchmark(domain: Arc<String>) -> Result<Benchmark, io::Error> {
     let profile_start = Instant::now();
     // Resolve DNS
-    let ip_addr = lookup_host(format!("{}:443", &*domain))
+    let ip_addr = lookup_host(format!("{}:443", domain))
         .await?
         .next()
         .unwrap();
@@ -47,7 +47,7 @@ async fn benchmark(domain: Arc<String>) -> Result<Benchmark, io::Error> {
     // Create TLS connection
     let native_tls_connector = native_tls::TlsConnector::new().unwrap();
     let tls_connector = tokio_native_tls::TlsConnector::from(native_tls_connector);
-    let mut tls_stream = tls_connector.connect(&*domain, tcp_socket).await.unwrap();
+    let mut tls_stream = tls_connector.connect(&domain, tcp_socket).await.unwrap();
     let tls_connection_time = profile_start.elapsed() - dns_resolution_time - tcp_connection_time;
     // Request data
     let req = format!(
